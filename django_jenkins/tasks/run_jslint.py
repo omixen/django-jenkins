@@ -3,7 +3,7 @@ import os
 import sys
 from optparse import make_option
 from django.conf import settings
-from django_jenkins.functions import check_output, relpath, find_first_existing_executable
+from django_jenkins.functions import check_output, find_first_existing_executable
 from django_jenkins.tasks import BaseTask, get_apps_locations
 
 class Task(BaseTask):
@@ -67,8 +67,9 @@ class Task(BaseTask):
 
         for path in self.static_files_iterator():
             jslint_output = check_output(
-                [self.interpreter, self.runner, self.implementation, relpath(path), fmt])
-            self.output.write(jslint_output)
+                [self.interpreter, self.runner, self.implementation, path, fmt])
+
+            self.output.write(jslint_output.decode('utf-8'))
 
         if self.to_file:
             self.output.write('</jslint>');

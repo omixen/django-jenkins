@@ -4,9 +4,13 @@ import re
 import sys
 from optparse import make_option
 from pyflakes.scripts import pyflakes
-from cStringIO import StringIO
 from django_jenkins.functions import relpath
 from django_jenkins.tasks import BaseTask, get_apps_locations
+
+try:
+    from StringIO import StringIO
+except ImportError:
+    from io import StringIO
 
 
 class Task(BaseTask):
@@ -50,7 +54,8 @@ class Task(BaseTask):
             sys.stdout = old_stdout
 
         # save report
-        pyflakes_output.reset()
+        pyflakes_output.seek(0)
+
         while True:
             line = pyflakes_output.readline()
             if not line:

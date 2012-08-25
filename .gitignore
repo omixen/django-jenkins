@@ -1,7 +1,9 @@
 .cache
 .ve2?
+.ve3?
 .coverage
 *.pyc
 reports
+MANIFEST
 
 
